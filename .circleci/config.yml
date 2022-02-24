@@ -15,19 +15,20 @@ jobs:
   build_and_push_image:
     description: Build prometheus-ecs-discovery image and push it to AWS ECR
     machine:
-      image: 'ubuntu-2004:202010-01'
+      image: 'ubuntu-2004:202111-02'
+    resource_class: medium
     steps:
       - checkout
       - run:
           name: Build and push to AWS ECR
           command: |
             export IMAGE_TAG=1.0.${CIRCLE_BUILD_NUM}
-            docker build --tag ${AWS_ECR_ACCOUNT}/metrifico:1.0.${CIRCLE_BUILD_NUM} .
+            docker build --tag ${AWS_ECR_ACCOUNT}/${CIRCLE_PROJECT_REPONAME}:1.0.${CIRCLE_BUILD_NUM} .
             # export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
             # export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
             # export AWS_REGION=${AWS_REGION}
             # export AWS_ECR_REGISTRY=395499912268.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
             aws ecr get-login-password | docker login --username AWS --password-stdin https://${AWS_ECR_ACCOUNT}
-            docker push ${AWS_ECR_REGISTRY}/prometheus-ecr-discovery
-            # export MANIFEST=$(aws ecr batch-get-image --repository-name metrifico --image-ids imageTag=1.0.${CIRCLE_BUILD_NUM} --query 'images[].imageManifest' --output text)
-            # aws ecr put-image --repository-name metrifico --image-tag $IMAGE_TAG --image-manifest "$MANIFEST"
+            docker push ${AWS_ECR_REGISTRY}/${CIRCLE_PROJECT_REPONAME}
+            # export MANIFEST=$(aws ecr batch-get-image --repository-name ${CIRCLE_PROJECT_REPONAME} --image-ids imageTag=1.0.${CIRCLE_BUILD_NUM} --query 'images[].imageManifest' --output text)
+            # aws ecr put-image --repository-name ${CIRCLE_PROJECT_REPONAME} --image-tag $IMAGE_TAG --image-manifest "$MANIFEST"
