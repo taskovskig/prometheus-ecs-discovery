@@ -13,6 +13,7 @@ workflows:
 
 jobs:
   build:
+    working_directory: "~/project_build_dir"
     description: Build prometheus-ecs-discovery image and push it to ECR
     machine:
       image: 'ubuntu-2004:202010-01'
