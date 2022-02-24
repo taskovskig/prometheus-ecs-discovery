@@ -17,6 +17,7 @@ jobs:
     machine:
       image: 'ubuntu-2004:202010-01'
     steps:
+      - checkout
       - run:
           name: Build and push to AWS ECR
           command: |
