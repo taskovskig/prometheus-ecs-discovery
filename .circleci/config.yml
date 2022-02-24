@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Export tag
           command: |
-            rm -rf *
+            mkdir ~/build_info
             export IMAGE_TAG=1.0.${CIRCLE_BUILD_NUM}
             echo ${IMAGE_TAG} > ~/build_info/image_tag.txt
       - aws-ecr/build-and-push-image:
